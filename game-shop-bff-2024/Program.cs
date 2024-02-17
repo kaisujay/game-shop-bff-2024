@@ -1,5 +1,6 @@
 using game_shop_bff_2024.Models;
 using game_shop_bff_2024.Repository;
+using game_shop_bff_2024.Repository.PlayerRepository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,14 +13,32 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+#region DbContext
 builder.Services.AddDbContext<GameShopBFFDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("GameShopBFFDbConnnectionString"));
 });
+#endregion
 
+#region AddedDbContextWithUserAndRole
 builder.Services.AddIdentity<PlayerModel, IdentityRole>()
     .AddEntityFrameworkStores<GameShopBFFDbContext>();
+#endregion
 
+#region IdentityPasswordSettingOverride
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 2;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+});
+#endregion
+
+#region Dependencys
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+#endregion
 
 var app = builder.Build();
 
