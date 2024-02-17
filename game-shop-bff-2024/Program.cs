@@ -1,3 +1,4 @@
+using game_shop_bff_2024.Models;
 using game_shop_bff_2024.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<GameShopBFFDbContext>(option =>
 {
-    option.UseSqlServer(builder.Configuration.GetConnectionString("GameShopApiDbConnnectionString"));
+    option.UseSqlServer(builder.Configuration.GetConnectionString("GameShopBFFDbConnnectionString"));
 });
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<PlayerModel, IdentityRole>()
     .AddEntityFrameworkStores<GameShopBFFDbContext>();
 
 
