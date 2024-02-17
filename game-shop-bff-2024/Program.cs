@@ -1,3 +1,7 @@
+using game_shop_bff_2024.Repository;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,15 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<GameShopBFFDbContext>(option =>
+{
+    option.UseSqlServer(builder.Configuration.GetConnectionString("GameShopApiDbConnnectionString"));
+});
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<GameShopBFFDbContext>();
+
 
 var app = builder.Build();
 
@@ -18,6 +31,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();    //Added Because using Identity
 app.UseAuthorization();
 
 app.MapControllers();
