@@ -1,0 +1,6 @@
+@game_shop_bff_2024_HostAddress = http://localhost:5152
+
+GET {{game_shop_bff_2024_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
